@@ -13,20 +13,20 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
+        var connectionOptions =  builder.Configuration.GetSection(ConnectionOptions.Position)
+                                       .Get<ConnectionOptions>();     
         
-        
-        var mongoDbClient = new MongoClientSettings
+        var mongoDbClientSettings = new MongoClientSettings
         {
             Scheme = ConnectionStringScheme.MongoDB,
-            Server = new MongoServerAddress("localhost", 27017),
-            Credential = new MongoCredential("DEFAULT", new MongoInternalIdentity("admin", "root"),
-                    new PasswordEvidence(new NetworkCredential("", "Test1").SecurePassword
-                ))
+            Server = new MongoServerAddress(connectionOptions!.Host, connectionOptions!.Port),
+            Credential = MongoCredential.CreateCredential(connectionOptions.Database, connectionOptions.Username, connectionOptions.Password),
         };
 
         try
         {
-            builder.Services.AddMongoDbClient(mongoDbClient);
+            builder.Services.AddMongoDbClient(mongoDbClientSettings);
         }
         catch(Exception e)
         {
@@ -39,7 +39,6 @@ public class Program
         builder.Services.AddControllers();
         builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
         builder.Services.AddScoped<ITransactionService, TransactionService>();
-
 
         var app = builder.Build();
         app.UseRouting();
