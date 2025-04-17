@@ -1,8 +1,9 @@
-using System.Net;
-using System.Security;
-using CaseStudy.Application.Repository;
+using CaseStudy.Api.Converter;
+using CaseStudy.Api.DTOs;
+using CaseStudy.Application.Repositorys;
 using CaseStudy.Application.Services;
 using CaseStudy.Core.Interfaces;
+using CaseStudy.Core.Models;
 using MongoDB.Driver;
 using MongoDB.Driver.Core.Configuration;
 
@@ -14,31 +15,33 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        var connectionOptions =  builder.Configuration.GetSection(ConnectionOptions.Position)
-                                       .Get<ConnectionOptions>();     
-        
+        var connectionOptions = builder.Configuration.GetSection(ConnectionOptions.Position)
+            .Get<ConnectionOptions>();
+
         var mongoDbClientSettings = new MongoClientSettings
         {
             Scheme = ConnectionStringScheme.MongoDB,
             Server = new MongoServerAddress(connectionOptions!.Host, connectionOptions!.Port),
-            Credential = MongoCredential.CreateCredential(connectionOptions.Database, connectionOptions.Username, connectionOptions.Password),
+            Credential = MongoCredential.CreateCredential(connectionOptions.Database, connectionOptions.Username,
+                connectionOptions.Password)
         };
 
         try
         {
             builder.Services.AddMongoDbClient(mongoDbClientSettings);
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             Console.WriteLine(e);
             return;
         }
-        
+
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddControllers();
+        builder.Services.AddTransient<ITransactionService, TransactionService>();
+        builder.Services.AddTransient<IConverter<TransactionDto, Transaction>, TransactionConverter>();
         builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
-        builder.Services.AddScoped<ITransactionService, TransactionService>();
 
         var app = builder.Build();
         app.UseRouting();

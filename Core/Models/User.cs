@@ -5,5 +5,10 @@ namespace CaseStudy.Core.Models;
 
 public class User
 {
+    [BsonGuidRepresentation(GuidRepresentation.Standard)]
+    public required Guid UserId { get; set; }
+
     public string Name { get; set; }
+
+    public int MonthlyBudget { get; set; }
 }

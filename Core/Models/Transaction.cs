@@ -1,5 +1,4 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson.Serialization.Attributes;
 
 namespace CaseStudy.Core.Models;
 
@@ -9,8 +8,7 @@ public class Transaction
 
     public Category Category { get; set; }
 
-    [BsonElement("user_id")]
-    public User User { get; set; }
+    [BsonElement("user_id")] public User User { get; set; }
 
     public int Amount { get; set; }
 }

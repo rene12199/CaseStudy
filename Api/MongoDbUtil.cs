@@ -15,6 +15,6 @@ public static class MongoDbUtil
         }
 
         serviceCollection.AddScoped<IMongoClient, MongoClient>(_ => new MongoClient(connectionString));
-        
+
     }
 }

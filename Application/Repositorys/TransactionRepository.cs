@@ -2,7 +2,7 @@
 using CaseStudy.Core.Models;
 using MongoDB.Driver;
 
-namespace CaseStudy.Application.Repository;
+namespace CaseStudy.Application.Repositorys;
 
 public class TransactionRepository : ITransactionRepository
 {

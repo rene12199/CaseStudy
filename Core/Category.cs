@@ -1,8 +1,14 @@
-﻿namespace CaseStudy.Core;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
-public enum Category
+namespace CaseStudy.Core;
+
+public class Category
 {
-    Food,
-    Rent,
-    Insurance
+    [BsonGuidRepresentation(GuidRepresentation.Standard)]
+    public Guid CategoryId { get; set; }
+
+    public string Name { get; set; }
+
+    public ExpenseType Type { get; set; }
 }
