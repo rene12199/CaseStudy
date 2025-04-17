@@ -38,4 +38,9 @@ public class TransactionConverter : IConverter<TransactionDto, Transaction>
             User = user
         };
     }
+
+    public TransactionDto ReverseConvert(Transaction categories)
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -1,11 +1,9 @@
 ﻿namespace CaseStudy.Core.Interfaces;
 
-public interface ICategoryRepository
+public interface ICategoryService
 {
-    Category GetCategoryById(Guid sourceCategoryId);
+    void CreateCategory(Category category);
     void UpdateCategory(Category category);
-
     IList<Category> GetAllCategories();
     void DeleteCategory(Guid transactionId);
-    bool TryGetCategoryById(Guid sourceCategoryId, out Category category);
 }

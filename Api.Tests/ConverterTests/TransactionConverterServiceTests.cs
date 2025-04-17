@@ -27,23 +27,24 @@ public class TransactionConverterServiceTests
             Amount = 100,
             CategoryId = categoryGuid,
             TransactionTime = DateTime.Now,
-            UserId = Guid.NewGuid()
+            UserId = Guid.NewGuid(),
+            Type = ExpenseType.Income
         };
-        
-        _transactionRepository.Setup(x => x.GetCategoryById(categoryGuid)).Returns(new Category()
+
+        _transactionRepository.Setup(x => x.GetCategoryById(categoryGuid)).Returns(new Category
         {
             CategoryId = categoryGuid,
-            Name = "Test",
-            Type = ExpenseType.Income
+            Name = "Test"
         });
 
         var domainObject = _transactionConverter.Convert(transaction);
 
         _transactionRepository.Verify(x => x.GetCategoryById(categoryGuid), Times.Once);
         Assert.That(domainObject.Amount, Is.EqualTo(transaction.Amount));
-        Assert.That(domainObject.Category.CategoryId, Is.EqualTo(transaction.CategoryId));
+        Assert.That(domainObject.Category?.CategoryId, Is.EqualTo(transaction.CategoryId));
         Assert.That(domainObject.TransactionTime, Is.EqualTo(transaction.TransactionTime));
         Assert.That(domainObject.User.UserId, Is.EqualTo(transaction.UserId));
+        Assert.That(domainObject.Type, Is.EqualTo(transaction.Type));
     }
 
     [Test]

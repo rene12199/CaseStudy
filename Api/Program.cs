@@ -2,6 +2,8 @@ using CaseStudy.Api.Converter;
 using CaseStudy.Api.DTOs;
 using CaseStudy.Application.Repositorys;
 using CaseStudy.Application.Services;
+using CaseStudy.Application.Tests.ServiceTests;
+using CaseStudy.Core;
 using CaseStudy.Core.Interfaces;
 using CaseStudy.Core.Models;
 using MongoDB.Driver;
@@ -36,12 +38,22 @@ public class Program
             return;
         }
 
+        if(args.ToList().Contains("--migrate"))
+        {
+            MongoDbUtil.CreateBaseData(mongoDbClientSettings);
+        }
+
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddControllers();
         builder.Services.AddTransient<ITransactionService, TransactionService>();
-        builder.Services.AddTransient<IConverter<TransactionDto, Transaction>, TransactionConverter>();
+        builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
+        builder.Services.AddTransient<ICategoryService, CategoryService>();
         builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+
+        builder.Services.AddTransient<IConverter<TransactionDto, Transaction>, TransactionConverter>();
+        builder.Services.AddTransient<IConverter<CategoryDto, Category>, CategoryConverter>();
+
 
         var app = builder.Build();
         app.UseRouting();

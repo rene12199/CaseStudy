@@ -3,6 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace CaseStudy.Core.Models;
 
+[BsonIgnoreExtraElements]
 public class User
 {
     [BsonGuidRepresentation(GuidRepresentation.Standard)]

@@ -22,16 +22,16 @@ public class TransactionController : ControllerBase
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public IActionResult CreateTransaction(TransactionDto transactionDto)
+    public IActionResult RecordTransaction(TransactionDto transactionDto)
     {
         // todo DTO Validation
         // if(invalid)
         // {
         //     return BadRequest();
         // }
-        //https://github.com/dotnet/aspnetcore/issues/58949
         _transactionService.CreateTransaction(_transactionConverter.Convert(transactionDto));
 
+        //https://github.com/dotnet/aspnetcore/issues/58949
         return Created();
     }
 }

@@ -27,8 +27,7 @@ public class TransactionServiceTests
             Category = new Category
             {
                 CategoryId = Guid.NewGuid(),
-                Name = "Test",
-                Type = ExpenseType.Income
+                Name = "Test"
             },
             TransactionTime = DateTime.Now,
             User = new User

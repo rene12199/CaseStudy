@@ -1,4 +1,6 @@
-﻿namespace CaseStudy.Api.DTOs;
+﻿using CaseStudy.Core;
+
+namespace CaseStudy.Api.DTOs;
 
 public class TransactionDto
 {
@@ -9,4 +11,6 @@ public class TransactionDto
     public Guid UserId { get; set; }
 
     public int Amount { get; set; }
+
+    public ExpenseType Type { get; set; }
 }

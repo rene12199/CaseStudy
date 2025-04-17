@@ -2,5 +2,6 @@
 
 public interface IConverter<TSource, TDestination>
 {
-    public TDestination Convert(TSource source);
+     TDestination Convert(TSource source);
+     TSource ReverseConvert(TDestination categories);
 }
