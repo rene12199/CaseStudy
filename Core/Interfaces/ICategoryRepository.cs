@@ -1,4 +1,6 @@
-﻿namespace CaseStudy.Core.Interfaces;
+﻿using CaseStudy.Core.Models;
+
+namespace CaseStudy.Core.Interfaces;
 
 public interface ICategoryRepository
 {

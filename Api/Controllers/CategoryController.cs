@@ -1,6 +1,8 @@
-﻿using CaseStudy.Api.DTOs;
+﻿using CaseStudy.Api.Converter;
+using CaseStudy.Api.DTOs;
 using CaseStudy.Core;
 using CaseStudy.Core.Interfaces;
+using CaseStudy.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CaseStudy.Api.Controllers;
@@ -10,9 +12,9 @@ namespace CaseStudy.Api.Controllers;
 public class CategoryController : ControllerBase
 {
     private readonly ICategoryService _categoryService;
-    private readonly IConverter<CategoryDto, Category> _converter;
+    private readonly ICategoryConverter _converter;
 
-    public CategoryController(ICategoryService categoryService, IConverter<CategoryDto, Category> converter)
+    public CategoryController(ICategoryService categoryService, ICategoryConverter converter)
     {
         _categoryService = categoryService;
         _converter = converter;
@@ -31,19 +33,19 @@ public class CategoryController : ControllerBase
         var categories = _categoryService.GetAllCategories();
 
         //https://github.com/dotnet/aspnetcore/issues/58949
-        return Ok(categories.Select(f => _converter.ReverseConvert(f)));
+        return Ok(categories.Select(f => _converter.Convert(f)));
     }
 
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public IActionResult CreateCategory(CategoryDto transactionDto)
+    public IActionResult CreateCategory(CategoryDto categoryDto)
     {
         // if(invalid)
         // {
         //     return BadRequest();
         // }
-        _categoryService.CreateCategory(_converter.Convert(transactionDto));
+        _categoryService.CreateCategory(_converter.Convert(categoryDto));
 
         //https://github.com/dotnet/aspnetcore/issues/58949
         return Created();
@@ -61,7 +63,7 @@ public class CategoryController : ControllerBase
         _categoryService.UpdateCategory(_converter.Convert(transactionDto));
 
         //https://github.com/dotnet/aspnetcore/issues/58949
-        return Created();
+        return Ok();
     }
 
     [HttpDelete]
@@ -76,6 +78,6 @@ public class CategoryController : ControllerBase
         _categoryService.DeleteCategory(transactionId);
 
         //https://github.com/dotnet/aspnetcore/issues/58949
-        return Created();
+        return Ok();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using CaseStudy.Core;
 using CaseStudy.Core.Interfaces;
+using CaseStudy.Core.Models;
 using MongoDB.Driver;
 
 namespace CaseStudy.Application.Repositorys;

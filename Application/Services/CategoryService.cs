@@ -1,5 +1,6 @@
 ﻿using CaseStudy.Core;
 using CaseStudy.Core.Interfaces;
+using CaseStudy.Core.Models;
 
 namespace CaseStudy.Application.Services;
 

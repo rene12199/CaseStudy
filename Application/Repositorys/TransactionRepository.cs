@@ -18,4 +18,9 @@ public class TransactionRepository : ITransactionRepository
     {
         Transactions.InsertOne(transaction);
     }
+
+    public IEnumerable<Transaction> ApplyFilters(FilterDefinition<Transaction> transactionFilter)
+    {
+       return Transactions.FindSync(transactionFilter).ToList();
+    }
 }

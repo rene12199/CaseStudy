@@ -1,10 +1,12 @@
-﻿using CaseStudy.Api.DTOs;
+﻿using CaseStudy.Api.Controllers;
+using CaseStudy.Api.DTOs;
 using CaseStudy.Core.Interfaces;
 using CaseStudy.Core.Models;
 
 namespace CaseStudy.Api.Converter;
 
-public class TransactionConverter : IConverter<TransactionDto, Transaction>
+public class TransactionConverter : ITransactionConverter
+
 {
     private readonly ICategoryRepository _transactionRepository;
 
@@ -14,7 +16,7 @@ public class TransactionConverter : IConverter<TransactionDto, Transaction>
 
     }
 
-    public Transaction Convert(TransactionDto source)
+    public Transaction Convert(CreateTransactionDto source)
     {
         if(source == null)
         {
@@ -35,12 +37,26 @@ public class TransactionConverter : IConverter<TransactionDto, Transaction>
             Amount = source.Amount,
             Category = category,
             TransactionTime = source.TransactionTime,
-            User = user
+            User = user,
+            Type = source.Type
         };
     }
 
-    public TransactionDto ReverseConvert(Transaction categories)
+    public TransactionViewDto Convert(Transaction source)
     {
-        throw new NotImplementedException();
-    }
+        return new TransactionViewDto()
+        {
+            Amount = source.Amount,
+            Category = source.Category?.Name,
+            TransactionTime = source.TransactionTime,
+            Type = source.Type
+            
+        };    }
+}
+
+public interface ITransactionConverter : 
+    IConverter<CreateTransactionDto, Transaction>,
+    IConverter<Transaction, TransactionViewDto>
+{
+    
 }

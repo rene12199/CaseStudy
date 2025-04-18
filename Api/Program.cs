@@ -51,8 +51,9 @@ public class Program
         builder.Services.AddTransient<ICategoryService, CategoryService>();
         builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 
-        builder.Services.AddTransient<IConverter<TransactionDto, Transaction>, TransactionConverter>();
-        builder.Services.AddTransient<IConverter<CategoryDto, Category>, CategoryConverter>();
+        builder.Services.AddTransient<ITransactionConverter, TransactionConverter>();
+        builder.Services.AddTransient<ICategoryConverter, CategoryConverter>();
+        builder.Services.AddTransient<IConverter<TransactionFilterDto, TransactionFilter>, FilterConverter>();
 
 
         var app = builder.Build();

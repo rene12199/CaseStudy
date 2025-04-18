@@ -1,6 +1,7 @@
 using CaseStudy.Application.Services;
 using CaseStudy.Core;
 using CaseStudy.Core.Interfaces;
+using CaseStudy.Core.Models;
 using NUnit.Framework;
 using Moq;
 

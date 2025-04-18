@@ -1,9 +1,10 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using CaseStudy.Core.Interfaces;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace CaseStudy.Core.Models;
 
 [BsonIgnoreExtraElements]
-public class Transaction
+public class Transaction 
 {
     public DateTime TransactionTime { get; set; }
 
@@ -11,7 +12,7 @@ public class Transaction
 
     [BsonElement("user_id")] public User User { get; set; }
 
-    public int Amount { get; set; }
+    public double Amount { get; set; }
 
     public ExpenseType Type { get; set; }
 }

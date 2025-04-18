@@ -2,7 +2,7 @@
 
 namespace CaseStudy.Api.DTOs;
 
-public class TransactionDto
+public class CreateTransactionDto
 {
     public DateTime TransactionTime { get; set; }
 
@@ -10,7 +10,7 @@ public class TransactionDto
 
     public Guid UserId { get; set; }
 
-    public int Amount { get; set; }
+    public double Amount { get; set; }
 
     public ExpenseType Type { get; set; }
 }

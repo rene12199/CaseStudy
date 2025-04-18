@@ -1,10 +1,11 @@
 ﻿using CaseStudy.Api.DTOs;
 using CaseStudy.Core;
 using CaseStudy.Core.Interfaces;
+using CaseStudy.Core.Models;
 
 namespace CaseStudy.Api.Converter;
 
-public class CategoryConverter : IConverter<CategoryDto, Category>
+public class CategoryConverter : ICategoryConverter
 {
     private readonly ICategoryRepository _transactionRepository;
 
@@ -23,11 +24,14 @@ public class CategoryConverter : IConverter<CategoryDto, Category>
         };
     }
 
-    public CategoryDto ReverseConvert(Category categories)
+    public CategoryDto Convert(Category source)
     {
         return new CategoryDto{
-            CategoryId = categories.CategoryId,
-            Name = categories.Name
+            CategoryId = source.CategoryId,
+            Name = source.Name
         };
+        
     }
 }
+
+public interface ICategoryConverter : IConverter<CategoryDto, Category>, IConverter<Category, CategoryDto> { }

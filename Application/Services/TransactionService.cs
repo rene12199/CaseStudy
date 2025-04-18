@@ -1,5 +1,6 @@
 ﻿using CaseStudy.Core.Interfaces;
 using CaseStudy.Core.Models;
+using MongoDB.Driver;
 
 namespace CaseStudy.Application.Services;
 
@@ -14,6 +15,45 @@ public class TransactionService : ITransactionService
 
     public void CreateTransaction(Transaction transaction)
     {
+        if(transaction == null)
+        {
+            throw new ArgumentNullException(nameof(transaction));
+        }
+
         _transactionRepository.CreateTransaction(transaction);
+    }
+
+
+    public IEnumerable<Transaction> FilterTransactions(TransactionFilter transactionFilter)
+    {
+        var filterList = ConvertFilterToQuery(transactionFilter);
+
+        return _transactionRepository.ApplyFilters(filterList);
+    }
+
+    private FilterDefinition<Transaction> ConvertFilterToQuery(TransactionFilter transactionFilterModel)
+    {
+        var transactionFilterBuilder = Builders<Transaction>.Filter;
+        var transactionFilter = transactionFilterBuilder.Empty;
+
+        if(transactionFilterModel.CreatedBefore != null)
+        {
+            transactionFilter &=
+                transactionFilterBuilder.Where(t => t.TransactionTime < transactionFilterModel.CreatedBefore);
+        }
+
+        if(transactionFilterModel.CreatedAfter != null)
+        {
+            transactionFilter &=
+                transactionFilterBuilder.Where(t => t.TransactionTime > transactionFilterModel.CreatedAfter);
+        }
+
+        if(transactionFilterModel.CategoryId != null)
+        {
+            transactionFilter &= transactionFilterBuilder.Where(t =>
+                t.Category != null && t.Category.CategoryId == transactionFilterModel.CategoryId);
+        }
+
+        return transactionFilter;
     }
 }
