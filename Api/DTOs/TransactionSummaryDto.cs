@@ -6,5 +6,4 @@ public class TransactionSummaryDto
     public double Incomes { get; set; }
     public double Expenses { get; set; }
     public string? Category { get; set; }
-    
 }

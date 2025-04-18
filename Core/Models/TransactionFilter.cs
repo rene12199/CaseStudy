@@ -1,8 +1,6 @@
-﻿using CaseStudy.Core.Interfaces;
+﻿namespace CaseStudy.Core.Models;
 
-namespace CaseStudy.Core.Models;
-
-public class TransactionFilter 
+public class TransactionFilter
 {
     public DateTime? CreatedAfter { get; set; }
     public DateTime? CreatedBefore { get; set; }

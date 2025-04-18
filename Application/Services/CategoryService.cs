@@ -1,5 +1,4 @@
-﻿using CaseStudy.Core;
-using CaseStudy.Core.Interfaces;
+﻿using CaseStudy.Core.Interfaces;
 using CaseStudy.Core.Models;
 
 namespace CaseStudy.Application.Services;
@@ -16,11 +15,20 @@ public class CategoryService : ICategoryService
 
     public void CreateCategory(Category category)
     {
+        if(category == null || category.CategoryId == Guid.Empty)
+        {
+            throw new ArgumentNullException(nameof(category));
+        }
         _categoryRepository.UpdateCategory(category);
     }
 
     public void UpdateCategory(Category category)
     {
+        if(category == null)
+        {
+            throw new ArgumentNullException(nameof(category));
+        }
+        
         _categoryRepository.UpdateCategory(category);
     }
 
@@ -31,6 +39,11 @@ public class CategoryService : ICategoryService
 
     public void DeleteCategory(Guid transactionId)
     {
+        if(transactionId == Guid.Empty)
+        {
+            throw new ArgumentNullException(nameof(transactionId));
+        }
+        
         _categoryRepository.DeleteCategory(transactionId);
     }
 }

@@ -1,5 +1,4 @@
-﻿using CaseStudy.Core;
-using CaseStudy.Core.Models;
+﻿using CaseStudy.Core.Models;
 using MongoDB.Bson;
 using MongoDB.Driver;
 

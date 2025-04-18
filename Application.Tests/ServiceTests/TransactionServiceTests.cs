@@ -10,12 +10,6 @@ namespace CaseStudy.Application.Tests.ServiceTests;
 [TestFixture]
 public class TransactionServiceTests
 {
-    private Mock<ITransactionRepository> _transactionRepository;
-    private ITransactionService _transactionService;
-    private Transaction _sampleTransaction;
-    private Guid _categoryId;
-    private Guid _userId;
-
     [SetUp]
     public void Setup()
     {
@@ -42,6 +36,12 @@ public class TransactionServiceTests
         };
     }
 
+    private Mock<ITransactionRepository> _transactionRepository;
+    private ITransactionService _transactionService;
+    private Transaction _sampleTransaction;
+    private Guid _categoryId;
+    private Guid _userId;
+
     [Test]
     public void CreateTransaction_WithValidTransaction_ShouldCreateTransaction()
     {
@@ -65,7 +65,7 @@ public class TransactionServiceTests
     {
         // Arrange
         var filter = new TransactionFilter();
-        var expectedTransactions = new List<Transaction> { _sampleTransaction };
+        var expectedTransactions = new List<Transaction> {_sampleTransaction};
         _transactionRepository.Setup(x => x.ApplyFilters(It.IsAny<FilterDefinition<Transaction>>()))
             .Returns(expectedTransactions);
 
@@ -89,12 +89,12 @@ public class TransactionServiceTests
             CreatedBefore = createdBefore
         };
 
-        var expectedTransactions = new List<Transaction> 
-        { 
-            new Transaction 
-            { 
-                TransactionTime = DateTime.Now.AddDays(-5) 
-            } 
+        var expectedTransactions = new List<Transaction>
+        {
+            new()
+            {
+                TransactionTime = DateTime.Now.AddDays(-5)
+            }
         };
 
         _transactionRepository.Setup(x => x.ApplyFilters(It.IsAny<FilterDefinition<Transaction>>()))
@@ -117,7 +117,7 @@ public class TransactionServiceTests
             CategoryId = _categoryId
         };
 
-        var expectedTransactions = new List<Transaction> { _sampleTransaction };
+        var expectedTransactions = new List<Transaction> {_sampleTransaction};
         _transactionRepository.Setup(x => x.ApplyFilters(It.IsAny<FilterDefinition<Transaction>>()))
             .Returns(expectedTransactions);
 
@@ -140,7 +140,7 @@ public class TransactionServiceTests
             CreatedBefore = DateTime.Now
         };
 
-        var expectedTransactions = new List<Transaction> { _sampleTransaction };
+        var expectedTransactions = new List<Transaction> {_sampleTransaction};
         _transactionRepository.Setup(x => x.ApplyFilters(It.IsAny<FilterDefinition<Transaction>>()))
             .Returns(expectedTransactions);
 
@@ -151,7 +151,7 @@ public class TransactionServiceTests
         Assert.That(result, Is.EqualTo(expectedTransactions));
         _transactionRepository.Verify(x => x.ApplyFilters(It.IsAny<FilterDefinition<Transaction>>()), Times.Once);
     }
-    
+
     [Test]
     public void FilterTransactions_WithInvalidDateRange_ShouldReturnEmptyList()
     {

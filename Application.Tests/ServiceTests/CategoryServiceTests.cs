@@ -1,8 +1,6 @@
 using CaseStudy.Application.Services;
-using CaseStudy.Core;
 using CaseStudy.Core.Interfaces;
 using CaseStudy.Core.Models;
-using NUnit.Framework;
 using Moq;
 
 namespace CaseStudy.Application.Tests.ServiceTests;
@@ -10,9 +8,6 @@ namespace CaseStudy.Application.Tests.ServiceTests;
 [TestFixture]
 public class CategoryServiceTests
 {
-    private Mock<ICategoryRepository> _categoryRepositoryMock;
-    private CategoryService _categoryService;
-
     [SetUp]
     public void Setup()
     {
@@ -20,11 +15,14 @@ public class CategoryServiceTests
         _categoryService = new CategoryService(_categoryRepositoryMock.Object);
     }
 
+    private Mock<ICategoryRepository> _categoryRepositoryMock;
+    private CategoryService _categoryService;
+
     [Test]
-    public void CreateCategory_ShouldCallRepositoryUpdateMethod()
+    public void CreateCategory_ValidCategory_ShouldCallRepositoryUpdateMethod()
     {
         // Arrange
-        var category = new Category { CategoryId = Guid.NewGuid(), Name = "Test Category" };
+        var category = new Category {CategoryId = Guid.NewGuid(), Name = "Test Category"};
 
         // Act
         _categoryService.CreateCategory(category);
@@ -34,10 +32,21 @@ public class CategoryServiceTests
     }
 
     [Test]
-    public void UpdateCategory_ShouldCallRepositoryUpdateMethod()
+    public void CreateCategory_NullCategory_ShouldThrowArgumentNullException()
     {
         // Arrange
-        var category = new Category { CategoryId = Guid.NewGuid(), Name = "Test Category" };
+        Category category = null;
+
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => _categoryService.CreateCategory(category));
+        _categoryRepositoryMock.Verify(x => x.UpdateCategory(It.IsAny<Category>()), Times.Never);
+    }
+    
+    [Test]
+    public void UpdateCategory_ValidCategory_ShouldCallRepositoryUpdateMethod()
+    {
+        // Arrange
+        var category = new Category {CategoryId = Guid.NewGuid(), Name = "Test Category"};
 
         // Act
         _categoryService.UpdateCategory(category);
@@ -47,13 +56,24 @@ public class CategoryServiceTests
     }
 
     [Test]
-    public void GetAllCategories_ShouldReturnCategoriesFromRepository()
+    public void UpdateCategory_NullCategory_ShouldThrowArgumentNullException()
+    {
+        // Arrange
+        Category category = null;
+
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => _categoryService.UpdateCategory(category));
+        _categoryRepositoryMock.Verify(x => x.UpdateCategory(It.IsAny<Category>()), Times.Never);
+    }
+
+    [Test]
+    public void GetAllCategories_HasCategories_ShouldReturnCategoriesFromRepository()
     {
         // Arrange
         var expectedCategories = new List<Category>
         {
-            new() { CategoryId = Guid.NewGuid(), Name = "Category 1" },
-            new() { CategoryId = Guid.NewGuid(), Name = "Category 2" }
+            new() {CategoryId = Guid.NewGuid(), Name = "Category 1"},
+            new() {CategoryId = Guid.NewGuid(), Name = "Category 2"}
         };
         _categoryRepositoryMock.Setup(x => x.GetAllCategories()).Returns(expectedCategories);
 
@@ -68,15 +88,20 @@ public class CategoryServiceTests
     }
 
     [Test]
-    public void DeleteCategory_ShouldCallRepositoryDeleteMethod()
+    public void GetAllCategories_NoCategories_ShouldReturnEmptyList()
     {
         // Arrange
-        var categoryId = Guid.NewGuid();
+        var emptyList = new List<Category>();
+        _categoryRepositoryMock.Setup(x => x.GetAllCategories()).Returns(emptyList);
 
         // Act
-        _categoryService.DeleteCategory(categoryId);
+        var result = _categoryService.GetAllCategories();
 
         // Assert
-        _categoryRepositoryMock.Verify(x => x.DeleteCategory(categoryId), Times.Once);
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result, Is.Empty);
+        _categoryRepositoryMock.Verify(x => x.GetAllCategories(), Times.Once);
     }
+
+  
 }

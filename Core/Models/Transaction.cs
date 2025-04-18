@@ -1,10 +1,9 @@
-﻿using CaseStudy.Core.Interfaces;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson.Serialization.Attributes;
 
 namespace CaseStudy.Core.Models;
 
 [BsonIgnoreExtraElements]
-public class Transaction 
+public class Transaction
 {
     public DateTime TransactionTime { get; set; }
 

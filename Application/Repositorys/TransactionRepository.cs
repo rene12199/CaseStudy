@@ -21,6 +21,6 @@ public class TransactionRepository : ITransactionRepository
 
     public IEnumerable<Transaction> ApplyFilters(FilterDefinition<Transaction> transactionFilter)
     {
-       return Transactions.FindSync(transactionFilter).ToList();
+        return Transactions.FindSync(transactionFilter).ToList();
     }
 }

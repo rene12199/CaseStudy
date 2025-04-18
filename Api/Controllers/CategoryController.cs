@@ -1,8 +1,6 @@
 ﻿using CaseStudy.Api.Converter;
 using CaseStudy.Api.DTOs;
-using CaseStudy.Core;
 using CaseStudy.Core.Interfaces;
-using CaseStudy.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CaseStudy.Api.Controllers;

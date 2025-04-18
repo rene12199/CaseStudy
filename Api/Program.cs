@@ -2,8 +2,6 @@ using CaseStudy.Api.Converter;
 using CaseStudy.Api.DTOs;
 using CaseStudy.Application.Repositorys;
 using CaseStudy.Application.Services;
-using CaseStudy.Application.Tests.ServiceTests;
-using CaseStudy.Core;
 using CaseStudy.Core.Interfaces;
 using CaseStudy.Core.Models;
 using MongoDB.Driver;

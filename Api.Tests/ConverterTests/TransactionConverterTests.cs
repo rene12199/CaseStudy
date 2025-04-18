@@ -4,21 +4,22 @@ using CaseStudy.Core;
 using CaseStudy.Core.Interfaces;
 using CaseStudy.Core.Models;
 using Moq;
+using NUnit.Framework;
 
 namespace Api.Tests.ConverterTests;
 
 [TestFixture]
 public class TransactionConverterTests
 {
-    private ITransactionConverter _transactionConverter;
-    private Mock<ICategoryRepository> _categoryRepository;
-
     [SetUp]
     public void Setup()
     {
         _categoryRepository = new Mock<ICategoryRepository>();
         _transactionConverter = new TransactionConverter(_categoryRepository.Object);
     }
+
+    private ITransactionConverter _transactionConverter;
+    private Mock<ICategoryRepository> _categoryRepository;
 
     [Test]
     public void Convert_CreateTransactionDto_ValidInput_ShouldReturnTransaction()
@@ -28,7 +29,7 @@ public class TransactionConverterTests
         var userId = Guid.NewGuid();
         var transactionTime = DateTime.Now;
         var amount = 100.50;
-        
+
         var dto = new CreateTransactionDto
         {
             Amount = amount,
@@ -81,7 +82,7 @@ public class TransactionConverterTests
         var categoryId = Guid.NewGuid();
         var amount = 100.50;
         var transactionTime = DateTime.Now;
-        
+
         var dto = new CreateTransactionDto
         {
             Amount = amount,
@@ -115,11 +116,11 @@ public class TransactionConverterTests
         var amount = 100.50;
         var transactionTime = DateTime.Now;
         var categoryName = "Test Category";
-        
+
         var transaction = new Transaction
         {
             Amount = amount,
-            Category = new Category { Name = categoryName },
+            Category = new Category {Name = categoryName},
             TransactionTime = transactionTime,
             Type = ExpenseType.Income
         };
@@ -143,7 +144,7 @@ public class TransactionConverterTests
         // Arrange
         var amount = 100.50;
         var transactionTime = DateTime.Now;
-        
+
         var transaction = new Transaction
         {
             Amount = amount,
@@ -171,7 +172,7 @@ public class TransactionConverterTests
         // Arrange
         var categoryId = Guid.NewGuid();
         var amount = 50.25;
-        
+
         var dto = new CreateTransactionDto
         {
             Amount = amount,
@@ -199,6 +200,73 @@ public class TransactionConverterTests
             Assert.That(result.Amount, Is.EqualTo(amount));
             Assert.That(result.Type, Is.EqualTo(ExpenseType.Expense));
             Assert.That(result.Category, Is.EqualTo(category));
+        });
+    }
+
+    [Test]
+    public void Convert_TransactionList_ValidInput_ShouldReturnTransactionSummaryDto()
+    {
+        // Arrange
+        var category = new Category { Name = "Test Category" };
+        var transactions = new List<Transaction>
+        {
+            new Transaction { Amount = 100.0, Type = ExpenseType.Income, Category = category },
+            new Transaction { Amount = 50.0, Type = ExpenseType.Income, Category = category },
+            new Transaction { Amount = 30.0, Type = ExpenseType.Expense, Category = category }
+        };
+
+        // Act
+        var result = _transactionConverter.Convert(transactions);
+
+        // Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(result.Incomes, Is.EqualTo(150.0)); // 100 + 50
+            Assert.That(result.Expenses, Is.EqualTo(30.0));
+            Assert.That(result.Balance, Is.EqualTo(120.0)); // 150 - 30
+            Assert.That(result.Category, Is.EqualTo("Test Category"));
+        });
+    }
+
+    [Test]
+    public void Convert_TransactionList_EmptyList_ShouldReturnEmptySummary()
+    {
+        // Arrange
+        var transactions = new List<Transaction>();
+
+        // Act
+        var result = _transactionConverter.Convert(transactions);
+
+        // Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(result.Incomes, Is.EqualTo(0.0));
+            Assert.That(result.Expenses, Is.EqualTo(0.0));
+            Assert.That(result.Balance, Is.EqualTo(0.0));
+            Assert.That(result.Category, Is.Null);
+        });
+    }
+
+    [Test]
+    public void Convert_TransactionList_NullCategory_ShouldReturnSummaryWithNullCategory()
+    {
+        // Arrange
+        var transactions = new List<Transaction>
+        {
+            new Transaction { Amount = 100.0, Type = ExpenseType.Income, Category = null },
+            new Transaction { Amount = 50.0, Type = ExpenseType.Expense, Category = null }
+        };
+
+        // Act
+        var result = _transactionConverter.Convert(transactions);
+
+        // Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(result.Incomes, Is.EqualTo(100.0));
+            Assert.That(result.Expenses, Is.EqualTo(50.0));
+            Assert.That(result.Balance, Is.EqualTo(50.0));
+            Assert.That(result.Category, Is.Null);
         });
     }
 }

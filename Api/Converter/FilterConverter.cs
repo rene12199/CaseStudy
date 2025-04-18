@@ -1,5 +1,4 @@
 ﻿using CaseStudy.Api.DTOs;
-using CaseStudy.Application;
 using CaseStudy.Core.Interfaces;
 using CaseStudy.Core.Models;
 
@@ -9,7 +8,12 @@ public class FilterConverter : IConverter<TransactionFilterDto, TransactionFilte
 {
     public TransactionFilter Convert(TransactionFilterDto source)
     {
-        return new TransactionFilter()
+        if(source == null)
+        {
+            throw new ArgumentNullException(nameof(source));
+        }
+        
+        return new TransactionFilter
         {
             CategoryId = source.CategoryId,
             CreatedAfter = source.CreatedAfter,
