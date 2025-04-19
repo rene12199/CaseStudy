@@ -1,9 +1,17 @@
-﻿services:
-  #  casestudy:
-  #    image: casestudy
-  #    build:
-  #      context: .
-  #      dockerfile: CaseStudy/Dockerfile
+services:
+#  casestudy:
+#    image: casestudy
+#    ports:
+#      - 5271:5271
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    depends_on:
+#      - mongo
+#    networks:
+#      - casestudy-net
+#    environment:
+#      - ASPNETCORE_URLS=http://0.0.0.0:5271
   mongo:
     image: mongo
     restart: always
@@ -12,7 +20,8 @@
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: Test1
-
+    networks:
+      - casestudy-net
   mongo-express:
     image: mongo-express
     restart: always
@@ -23,3 +32,11 @@
       ME_CONFIG_MONGODB_ADMINPASSWORD: Test1
       ME_CONFIG_MONGODB_URL: mongodb://root:Test1@mongo:27017/
       ME_CONFIG_BASICAUTH: false
+    depends_on:
+      - mongo
+    networks:
+      - casestudy-net
+
+networks:
+  casestudy-net:
+    driver: bridge

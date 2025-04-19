@@ -36,11 +36,8 @@ public class Program
             return;
         }
 
-        if(args.ToList().Contains("--migrate"))
-        {
-            MongoDbUtil.CreateBaseData(mongoDbClientSettings);
-        }
-
+        MongoDbUtil.CreateBaseData(mongoDbClientSettings);
+            
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddControllers();
@@ -59,13 +56,12 @@ public class Program
 #pragma warning disable ASP0014
         app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 #pragma warning restore ASP0014
-        if(app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
 
+        app.UseSwagger();
+        app.UseSwaggerUI();
+        
         app.UseHttpsRedirection();
+        Console.WriteLine("Running API");
         app.Run();
     }
 }

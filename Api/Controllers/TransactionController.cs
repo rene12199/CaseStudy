@@ -77,7 +77,10 @@ public class TransactionController : ControllerBase
         var categories = transactions.GroupBy(t => t.Category?.CategoryId);
         var summary = new List<TransactionSummaryDto>();
 
-        foreach (var category in categories) summary.Add(_transactionConverter.Convert(category));
+        foreach (var category in categories)
+        {
+            summary.Add(_transactionConverter.Convert(category));
+        }
 
         return Ok(summary);
     }

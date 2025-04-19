@@ -4,7 +4,6 @@ using CaseStudy.Core;
 using CaseStudy.Core.Interfaces;
 using CaseStudy.Core.Models;
 using Moq;
-using NUnit.Framework;
 
 namespace Api.Tests.ConverterTests;
 

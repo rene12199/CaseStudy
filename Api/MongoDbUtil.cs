@@ -10,6 +10,7 @@ public static class MongoDbUtil
         MongoClientSettings connectionSettings)
     {
         var mongoClient = new MongoClient(connectionSettings);
+        Console.WriteLine($"Connected to MongoDb: {connectionSettings.Server.Host}:{connectionSettings.Server.Port}");
         var pingResult = mongoClient.GetDatabase("admin").RunCommand<BsonDocument>(new BsonDocument("ping", 1));
         if(pingResult == null)
         {

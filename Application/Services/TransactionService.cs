@@ -39,13 +39,13 @@ public class TransactionService : ITransactionService
         if(transactionFilterModel.CreatedBefore != null)
         {
             transactionFilter &=
-                transactionFilterBuilder.Where(t => t.TransactionTime < transactionFilterModel.CreatedBefore);
+                transactionFilterBuilder.Where(t => t.TransactionTime.Date < transactionFilterModel.CreatedBefore);
         }
 
         if(transactionFilterModel.CreatedAfter != null)
         {
             transactionFilter &=
-                transactionFilterBuilder.Where(t => t.TransactionTime > transactionFilterModel.CreatedAfter);
+                transactionFilterBuilder.Where(t => t.TransactionTime.Date > transactionFilterModel.CreatedAfter);
         }
 
         if(transactionFilterModel.CategoryId != null)
