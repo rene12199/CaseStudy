@@ -36,19 +36,19 @@ public class TransactionService : ITransactionService
         var transactionFilterBuilder = Builders<Transaction>.Filter;
         var transactionFilter = transactionFilterBuilder.Empty;
 
-        if(transactionFilterModel.CreatedBefore != null)
+        if(transactionFilterModel.CreatedBefore.HasValue)
         {
             transactionFilter &=
-                transactionFilterBuilder.Where(t => t.TransactionTime.Date < transactionFilterModel.CreatedBefore);
+                transactionFilterBuilder.Where(t => t.TransactionTime.Date <= transactionFilterModel.CreatedBefore.Value.Date);
         }
 
-        if(transactionFilterModel.CreatedAfter != null)
+        if(transactionFilterModel.CreatedAfter.HasValue)
         {
             transactionFilter &=
-                transactionFilterBuilder.Where(t => t.TransactionTime.Date > transactionFilterModel.CreatedAfter);
+                transactionFilterBuilder.Where(t => t.TransactionTime.Date >= transactionFilterModel.CreatedAfter.Value.Date);
         }
 
-        if(transactionFilterModel.CategoryId != null)
+        if(transactionFilterModel.CategoryId.HasValue)
         {
             transactionFilter &= transactionFilterBuilder.Where(t =>
                 t.Category != null && t.Category.CategoryId == transactionFilterModel.CategoryId);

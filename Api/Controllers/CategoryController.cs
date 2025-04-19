@@ -21,16 +21,10 @@ public class CategoryController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(typeof(IList<CategoryDto>), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public IActionResult GetAllCategories()
     {
-        // if(invalid)
-        // {
-        //     return BadRequest();
-        // }
         var categories = _categoryService.GetAllCategories();
 
-        //https://github.com/dotnet/aspnetcore/issues/58949
         return Ok(categories.Select(f => _converter.Convert(f)));
     }
 
@@ -60,7 +54,6 @@ public class CategoryController : ControllerBase
         // }
         _categoryService.UpdateCategory(_converter.Convert(transactionDto));
 
-        //https://github.com/dotnet/aspnetcore/issues/58949
         return Ok();
     }
 
@@ -75,7 +68,6 @@ public class CategoryController : ControllerBase
         // }
         _categoryService.DeleteCategory(transactionId);
 
-        //https://github.com/dotnet/aspnetcore/issues/58949
         return Ok();
     }
 }

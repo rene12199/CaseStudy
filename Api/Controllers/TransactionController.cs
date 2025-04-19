@@ -74,6 +74,7 @@ public class TransactionController : ControllerBase
             CreatedBefore = new DateTime(year, month, DateTime.DaysInMonth(year, month))
         });
 
+        //todo könnte man auch in einen Converter hauen
         var categories = transactions.GroupBy(t => t.Category?.CategoryId);
         var summary = new List<TransactionSummaryDto>();
 
