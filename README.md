@@ -2,6 +2,7 @@ How to run:
 docker compose up --build
 
 Gibt nur einen Nutzer mit GUID 2D2FAF5-1D79-403B-AD95-4417D425EBEB
+
 Monthly Budget ist nicht implementiert
 
 Design:
